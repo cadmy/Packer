@@ -10,6 +10,15 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * The Solver class is responsible for making the best choice for given task data.
+ * The Solver class use basic recursion algorithm to solve the knapsack problem.
+ * The Solver improves the basic solution allowing to process decimal values of weight and price.
+ * Also, it selects the lighter items with the same price.
+ * Current approach concedes dynamic programming algorithm in time and performance.
+ * But it is more clear.
+ * The given task operates with small numbers which described in constraints.
+ * Thus the given solution is optimal.
+ *
  * Created by Cadmy on 06.06.2019.
  */
 public class Solver {

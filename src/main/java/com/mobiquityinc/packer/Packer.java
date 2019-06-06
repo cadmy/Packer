@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
+ * The Packer class is responsible for reading a file with a task and show results provided by Solver.class.
+ *
  * Created by Cadmy on 04.06.2019.
  */
 public class Packer {
