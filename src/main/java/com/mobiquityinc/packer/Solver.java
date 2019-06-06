@@ -41,7 +41,7 @@ public class Solver {
                 List<String> itemContent = Arrays.asList(packItem.split(","));
                 int itemIndex = Integer.valueOf(itemContent.get(0));
                 BigDecimal itemWeight = new BigDecimal(itemContent.get(1));
-                BigDecimal itemCost = new BigDecimal(itemContent.get(2).replaceAll("[^0-9]", ""));
+                BigDecimal itemCost = new BigDecimal(itemContent.get(2).replaceAll("[^0-9.,]", ""));
                 things.add(new Thing(itemIndex, itemWeight, itemCost));
             }
         } else {
@@ -49,10 +49,10 @@ public class Solver {
         }
     }
 
-    public void showResult() {
+    public String solve() {
         List<Thing> bestThings = new ArrayList<>();
         if (fillPackage(maxWeight, things, bestThings, things.size()).signum() == 0) {
-            System.out.println("-");
+            return "-";
         }
         for (Iterator<Thing> iterator = bestThings.iterator(); iterator.hasNext(); ) {
             Thing thing = iterator.next();

@@ -22,15 +22,14 @@ public class Packer {
                     throw new APIException();
                 }
 
-                solver.showResult();
+                return solver.solve();
             }
             if (sc.ioException() != null) {
                 System.out.println("scanner ex");
             }
         } catch (FileNotFoundException e) {
-            System.out.println("FileNotFoundException");
+            throw new APIException();
         }
-        return "";
     }
 
 }
