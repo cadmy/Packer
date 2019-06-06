@@ -22,10 +22,10 @@ public class Packer {
                 }
             }
             if (sc.ioException() != null) {
-               throw new APIException();
+               throw new APIException("Error while processing file. ", sc.ioException());
             }
         } catch (FileNotFoundException e) {
-            throw new APIException();
+            throw new APIException("Cannot find file. ", e);
         }
        return stringBuilder.toString();
     }

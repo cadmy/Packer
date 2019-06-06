@@ -68,7 +68,7 @@ public class Solver {
         try {
             parseTask();
         } catch (NumberFormatException e) {
-            throw new APIException();
+            throw new APIException("Invalid task data. ", e);
         }
         List<Thing> bestThings = new ArrayList<>();
         if (fillPackage(maxWeight, things, bestThings, things.size()).signum() == 0) {
