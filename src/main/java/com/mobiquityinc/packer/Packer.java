@@ -12,24 +12,22 @@ import java.util.Scanner;
 public class Packer {
 
     public static String pack(String filePath) throws APIException {
+        StringBuilder stringBuilder = new StringBuilder();
         try (Scanner sc = new Scanner(new File(filePath), "UTF-8")) {
             while (sc.hasNextLine()) {
                 Solver solver = new Solver(sc.nextLine());
-
-                try {
-                    solver.parseTask();
-                } catch (NumberFormatException e) {
-                    throw new APIException();
+                stringBuilder.append(solver.solve());
+                if (sc.hasNextLine()) {
+                    stringBuilder.append("\n");
                 }
-
-                return solver.solve();
             }
             if (sc.ioException() != null) {
-                System.out.println("scanner ex");
+               throw new APIException();
             }
         } catch (FileNotFoundException e) {
             throw new APIException();
         }
+       return stringBuilder.toString();
     }
 
 }

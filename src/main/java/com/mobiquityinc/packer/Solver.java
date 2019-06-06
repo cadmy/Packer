@@ -23,15 +23,24 @@ public class Solver {
         this.things = new ArrayList<>();
     }
 
-    public void parseTask() throws NumberFormatException, APIException {
+    private void parseTask() throws NumberFormatException, APIException {
         if (taskData != null && !taskData.isEmpty()) {
             List<String> dataItems = Arrays.asList(taskData.split(" "));
 
-            if (!dataItems.get(1).equals(":")) {
+            if (dataItems.size()<2 || !dataItems.get(1).equals(":")) {
                 throw new APIException();
             }
 
             maxWeight = new BigDecimal(dataItems.get(0));
+
+            if (maxWeight.compareTo(BigDecimal.valueOf(100)) == 1) {
+                throw new APIException();
+            }
+
+            if (dataItems.size() > 17) {
+                throw new APIException();
+            }
+
             for (int i = 2, dataItemsSize = dataItems.size(); i < dataItemsSize; i++) {
                 String packItem = dataItems.get(i);
                 if (!packItem.startsWith("(") || !packItem.substring(packItem.length() - 1).equals(")")) {
@@ -42,6 +51,12 @@ public class Solver {
                 int itemIndex = Integer.valueOf(itemContent.get(0));
                 BigDecimal itemWeight = new BigDecimal(itemContent.get(1));
                 BigDecimal itemCost = new BigDecimal(itemContent.get(2).replaceAll("[^0-9.,]", ""));
+
+                if (itemWeight.compareTo(BigDecimal.valueOf(100)) == 1 ||
+                        itemCost.compareTo(BigDecimal.valueOf(100)) == 1) {
+                    throw new APIException();
+                }
+
                 things.add(new Thing(itemIndex, itemWeight, itemCost));
             }
         } else {
@@ -49,20 +64,25 @@ public class Solver {
         }
     }
 
-    public String solve() {
+    public String solve() throws APIException {
+        try {
+            parseTask();
+        } catch (NumberFormatException e) {
+            throw new APIException();
+        }
         List<Thing> bestThings = new ArrayList<>();
         if (fillPackage(maxWeight, things, bestThings, things.size()).signum() == 0) {
             return "-";
         }
+        StringBuilder stringBuilder = new StringBuilder();
         for (Iterator<Thing> iterator = bestThings.iterator(); iterator.hasNext(); ) {
             Thing thing = iterator.next();
-            System.out.print(thing.getIndex());
+            stringBuilder.append(thing.getIndex());
             if (iterator.hasNext()) {
-                System.out.print(",");
-            } else {
-                System.out.println();
+                stringBuilder.append(",");
             }
         }
+        return stringBuilder.toString();
     }
 
     private BigDecimal fillPackage(BigDecimal weight, List<Thing> things, List<Thing> bestThings, int counter) {
